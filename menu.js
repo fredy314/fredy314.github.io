@@ -21,52 +21,35 @@
         });
         var hide = Lampa.Storage.get('menu_hide', []);
         $('.wrap__left .menu__list .menu__item').each(function () {
-            var name = $(this).data('action');
             var text = $(this).text().trim();
             Lampa.SettingsApi.addParam({
                 component: 'Multi_Menu_Component_conf',
                 param: {
-                    name: 'Multi_Menu_Component_conf_' + text,
-                    type: 'trigger', //доступно select,input,trigger,title,static
-                    default: false
+                    //name: 'Multi_Menu_Component_conf_' + text,
+                    type: 'static', //доступно select,input,trigger,title,static
                 },
                 field: {
-                    name: 'Скрыть ' + $(this).text(),
+                    name: 'Скрыть ' + text,
                     description: 'Скрывает пункт в левом меню'
                 },
-                onChange: function (value) {
+                onRender: function (item) {
                     var hide = Lampa.Storage.get('menu_hide', []);
-                    if (value === "true") {
-                        if (hide.indexOf(text) === -1) {
-                            hide.push(text);
-                            Lampa.Storage.set('menu_hide', hide);
-                        }
-                    } else {
+                    var el = $('<div class="settings-param__value" />');
+                    el.text(hide.indexOf(text) !== -1 ? 'Скрыто' : 'Отображается');
+                    item.find('.settings-param__value').remove();
+                    item.find('.settings-param__name').after(el);
+                    item.off('click').on('click', function () {
                         if (hide.indexOf(text) !== -1) {
                             hide.splice(hide.indexOf(text), 1);
-                            Lampa.Storage.set('menu_hide', hide);
+                        } else {
+                            hide.push(text);
                         }
-                    }
-                    hideItems();
-                }
+                        Lampa.Storage.set('menu_hide', hide);
+                        hideItems();
+                        el.text(hide.indexOf(text) !== -1 ? 'Скрыто' : 'Отображается');
+                    });
+                },
             });
-            if (hide.indexOf(text) !== -1) {
-                Lampa.Storage.set('Multi_Menu_Component_conf_' + text, "true");
-            } else {
-                Lampa.Storage.set('Multi_Menu_Component_conf_' + text, "false");
-            }
-        });
-        Lampa.Storage.listener.follow('change', function (e) {
-            if (e.name == 'menu_hide') {
-                $('.wrap__left .menu__list .menu__item').each(function () {
-                    var text = $(this).text().trim();
-                    if (e.value.indexOf(name) !== -1) {
-                        Lampa.Storage.set('Multi_Menu_Component_conf_' + text, "true");
-                    } else {
-                        Lampa.Storage.set('Multi_Menu_Component_conf_' + text, "false");
-                    }
-                });
-            }
         });
     }
 
