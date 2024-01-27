@@ -59,7 +59,7 @@
         Lampa.Storage.listener.follow('change', function (e) {
             if (e.name == 'menu_hide') {
                 $('.wrap__left .menu__list .menu__item').each(function () {
-                    var name = $(this).text().trim();
+                    var text = $(this).text().trim();
                     if (e.value.indexOf(name) !== -1) {
                         Lampa.Storage.set('Multi_Menu_Component_conf_' + text, "true");
                     } else {
