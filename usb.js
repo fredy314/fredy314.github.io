@@ -1,25 +1,5 @@
 (function () {
     'use strict';
-/*
-
-    (function () {
-        'use strict';
-
-        tizen.filesystem.listStorages(function(result) {
-            console.log(JSON.stringify(result));
-        }, function() {
-            console.log(JSON.stringify(error));
-        });
-
-        tizen.filesystem.addStorageStateChangeListener(function(result) {
-            console.log(JSON.stringify(result));
-        }, function(error) {
-            console.log(JSON.stringify(error));
-        });
-
-    })();
-    */
-
     function Component(object) {
         var html = Lampa.Template.js('client_usb_main'),
             head = html.find('.client-usb-main__head'),
